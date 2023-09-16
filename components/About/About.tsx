@@ -1,5 +1,5 @@
 import React from 'react';
-import Bridge from '../components/Icons/Bridge';
+import Bridge from '../Icons/Bridge';
 
 const About: React.FC = () => {
   return (

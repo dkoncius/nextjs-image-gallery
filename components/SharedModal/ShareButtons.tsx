@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowNarrowUpIcon, DownloadIcon } from '@heroicons/react/outline';
-import Twitter from './Icons/Twitter'
-import Facebook from './Icons/Facebook'
+import Twitter from '../Icons/Twitter'
+import Facebook from '../Icons/Facebook'
 
 interface ControlButtonsProps {
   currentImage: any; // Type accordingly

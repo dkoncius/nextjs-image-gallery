@@ -1,7 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Carousel from '../../components/Carousel'
+import Carousel from '../../components/Carousel/Carousel'
 import getResults from '../../utils/cachedImages'
 import cloudinary from '../../utils/cloudinary'
 import getBase64ImageUrl from '../../utils/generateBlurPlaceholder'

@@ -4,13 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
-import Bridge from '../components/Icons/Bridge';
-import Modal from '../components/Modal';
+import Modal from '../components/Modal/Modal';
 import cloudinary from '../utils/cloudinary';
 import getBase64ImageUrl from '../utils/generateBlurPlaceholder';
 import type { ImageProps } from '../utils/types';
 import { useLastViewedPhoto } from '../utils/useLastViewedPhoto';
-import About from '../components/About';
+import About from '../components/About/About';
 
 const Home: NextPage<{ images: ImageProps[] }> = ({ images }) => {
   const router = useRouter();

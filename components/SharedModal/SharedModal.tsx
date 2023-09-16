@@ -2,13 +2,13 @@ import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
-import { variants } from '../utils/animationVariants'
-import downloadPhoto from '../utils/downloadPhoto'
-import { range } from '../utils/range'
-import type { ImageProps, SharedModalProps } from '../utils/types'
+import { variants } from '../../utils/animationVariants'
+import downloadPhoto from '../../utils/downloadPhoto'
+import { range } from '../../utils/range'
+import type { ImageProps, SharedModalProps } from '../../utils/types'
 
 
-// import your new components
+// imported SharedModal components
 import MainImage from './MainImage';
 import NavigationButtons from './NavigationButtons';
 import DownloadButton from './ShareButtons';  // Adjust paths as necessary
