@@ -13,6 +13,7 @@ import MainImage from './MainImage';
 import NavigationButtons from './NavigationButtons';
 import DownloadButton from './ShareButtons';  // Adjust paths as necessary
 import CloseButton from './CloseButton';
+import BottomNavbar from './BottomNavbar';
 
 export default function SharedModal({
   index,
@@ -100,41 +101,7 @@ export default function SharedModal({
                 className="mx-auto mt-6 mb-6 flex aspect-[3/2] h-14"
               >
                 <AnimatePresence initial={false}>
-                  {filteredImages.map(({ public_id, format, id }) => (
-                    <motion.button
-                      initial={{
-                        width: '0%',
-                        x: `${Math.max((index - 1) * -100, 15 * -100)}%`,
-                      }}
-                      animate={{
-                        scale: id === index ? 1.25 : 1,
-                        width: '100%',
-                        x: `${Math.max(index * -100, 15 * -100)}%`,
-                      }}
-                      exit={{ width: '0%' }}
-                      onClick={() => changePhotoId(id)}
-                      key={id}
-                      className={`${
-                        id === index
-                          ? 'z-20 rounded-md shadow shadow-black/50'
-                          : 'z-10'
-                      } ${id === 0 ? 'rounded-l-md' : ''} ${
-                        id === images.length - 1 ? 'rounded-r-md' : ''
-                      } relative inline-block w-full shrink-0 transform-gpu overflow-hidden focus:outline-none`}
-                    >
-                      <Image
-                        alt="small photos on the bottom"
-                        width={180}
-                        height={120}
-                        className={`${
-                          id === index
-                            ? 'brightness-110 hover:brightness-110'
-                            : 'brightness-50 contrast-125 hover:brightness-75'
-                        } h-full transform object-cover transition`}
-                        src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_180/${public_id}.${format}`}
-                      />
-                    </motion.button>
-                  ))}
+                  <BottomNavbar filteredImages={filteredImages} index={index} changePhotoId={changePhotoId} />
                 </AnimatePresence>
               </motion.div>
             </div>
