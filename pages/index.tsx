@@ -1,30 +1,28 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
-import Bridge from '../components/Icons/Bridge'
-import Modal from '../components/Modal'
-import cloudinary from '../utils/cloudinary'
-import getBase64ImageUrl from '../utils/generateBlurPlaceholder'
-import type { ImageProps } from '../utils/types'
-import { useLastViewedPhoto } from '../utils/useLastViewedPhoto'
+import { NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
+import Bridge from '../components/Icons/Bridge';
+import Modal from '../components/Modal';
+import cloudinary from '../utils/cloudinary';
+import getBase64ImageUrl from '../utils/generateBlurPlaceholder';
+import type { ImageProps } from '../utils/types';
+import { useLastViewedPhoto } from '../utils/useLastViewedPhoto';
 
-const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
-  const router = useRouter()
-  const { photoId } = router.query
-  const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto()
-
-  const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null)
+const Home: NextPage<{ images: ImageProps[] }> = ({ images }) => {
+  const router = useRouter();
+  const { photoId } = router.query;
+  const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
+  const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    // This effect keeps track of the last viewed photo in the modal to keep the index page in sync when the user navigates back
     if (lastViewedPhoto && !photoId) {
-      lastViewedPhotoRef.current.scrollIntoView({ block: 'center' })
-      setLastViewedPhoto(null)
+      lastViewedPhotoRef.current?.scrollIntoView({ block: 'center' });
+      setLastViewedPhoto(null);
     }
-  }, [photoId, lastViewedPhoto, setLastViewedPhoto])
+  }, [photoId, lastViewedPhoto, setLastViewedPhoto]);
 
   return (
     <>
@@ -105,38 +103,29 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 export default Home
 
 export async function getStaticProps() {
-  const results = await cloudinary.v2.search
+  const { resources } = await cloudinary.v2.search
     .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
     .sort_by('public_id', 'desc')
     .max_results(400)
-    .execute()
-  let reducedResults: ImageProps[] = []
+    .execute();
 
-  let i = 0
-  for (let result of results.resources) {
-    reducedResults.push({
-      id: i,
-      height: result.height,
-      width: result.width,
-      public_id: result.public_id,
-      format: result.format,
-    })
-    i++
-  }
+  const reducedResults: ImageProps[] = resources.map((result, index) => ({
+    id: index,
+    height: result.height,
+    width: result.width,
+    public_id: result.public_id,
+    format: result.format,
+  }));
 
-  const blurImagePromises = results.resources.map((image: ImageProps) => {
-    console.log(image)
-    return getBase64ImageUrl(image)
-  })
-  const imagesWithBlurDataUrls = await Promise.all(blurImagePromises)
+  const imagesWithBlurDataUrls = await Promise.all(resources.map(getBase64ImageUrl));
 
-  for (let i = 0; i < reducedResults.length; i++) {
-    reducedResults[i].blurDataUrl = imagesWithBlurDataUrls[i]
-  }
+  reducedResults.forEach((result, index) => {
+    result.blurDataUrl = imagesWithBlurDataUrls[index];
+  });
 
   return {
     props: {
       images: reducedResults,
     },
-  }
+  };
 }
